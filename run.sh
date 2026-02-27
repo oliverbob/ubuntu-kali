@@ -52,19 +52,20 @@ apt install -y \
   tmux \
   neovim
 
-echo "[+] Installing wordlists"
-apt install -y wordlists seclists
+echo "[+] Installing wordlists (no apt wordlists/seclists)"
+WORDLIST_DIR="$HOME/wordlists"
+mkdir -p "$WORDLIST_DIR"
 
-# Extract rockyou if needed
-if [[ -f /usr/share/wordlists/rockyou.txt.gz ]]; then
-  echo "[+] Extracting rockyou.txt"
-  gunzip -f /usr/share/wordlists/rockyou.txt.gz
+if [[ ! -d "$WORDLIST_DIR/SecLists" ]]; then
+  git clone --depth=1 https://github.com/danielmiessler/SecLists.git "$WORDLIST_DIR/SecLists"
 fi
 
-echo "[+] Linking wordlists to /opt"
-mkdir -p /opt/wordlists
-ln -sf /usr/share/wordlists /opt/wordlists/system || true
-ln -sf /usr/share/seclists /opt/wordlists/seclists || true
+if [[ ! -f "$WORDLIST_DIR/rockyou.txt" ]]; then
+  wget -O "$WORDLIST_DIR/rockyou.txt" \
+    https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt
+fi
+
+echo "[✓] Wordlists ready at $WORDLIST_DIR"
 
 echo "[+] Installing Metasploit Framework (official)"
 curl -fsSL https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb \

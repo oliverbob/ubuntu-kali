@@ -63,7 +63,7 @@ sudo apt install -y \
 
 ```bash
 sudo apt install -y \
-  john hashcat hashcat-data crunch wordlists
+  john hashcat hashcat-data crunch
 ```
 
 ### Reverse engineering and forensics
@@ -91,12 +91,24 @@ pipx install mitmproxy
 pipx install ropper
 ```
 
-## Optional: curated wordlists and repos
+## Wordlists (no apt wordlists/seclists)
 
 ```bash
-mkdir -p "$HOME/security/lists" "$HOME/security/tools"
-cd "$HOME/security/lists"
-git clone https://github.com/danielmiessler/SecLists.git
+WORDLIST_DIR="$HOME/wordlists"
+mkdir -p "$WORDLIST_DIR"
+
+# SecLists replacement
+if [ ! -d "$WORDLIST_DIR/SecLists" ]; then
+  git clone --depth=1 https://github.com/danielmiessler/SecLists.git "$WORDLIST_DIR/SecLists"
+fi
+
+# RockYou replacement
+if [ ! -f "$WORDLIST_DIR/rockyou.txt" ]; then
+  wget -O "$WORDLIST_DIR/rockyou.txt" \
+    https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt
+fi
+
+echo "[✓] Wordlists ready at $WORDLIST_DIR"
 ```
 
 ## Sanity check
