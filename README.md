@@ -34,7 +34,8 @@ sudo apt update
 sudo apt install -y \
   curl wget git vim tmux jq yq ripgrep fd-find tree htop net-tools \
   build-essential python3 python3-pip python3-venv pipx openjdk-17-jre \
-  ca-certificates gnupg lsb-release unzip p7zip-full
+  ca-certificates gnupg lsb-release unzip p7zip-full \
+  postgresql postgresql-contrib
 ```
 
 ### Networking, recon, and scanning
